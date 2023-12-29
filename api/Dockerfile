@@ -5,7 +5,7 @@ FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 ENV LANG=C.UTF-8 \
     APP_HOME=/app \
     TZ=Asia/Tokyo \
-    BUNDLE_PATH=/bundle 
+    BUNDLE_PATH=/bundle
 
 FROM base as build
 
@@ -30,7 +30,9 @@ RUN apt-get update -qq && \
 COPY Gemfile $APP_HOME/Gemfile
 COPY Gemfile.lock $APP_HOME/Gemfile.lock
 
-RUN bundle install
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    bundle exec bootsnap precompile --gemfile
 
 COPY . .
 
