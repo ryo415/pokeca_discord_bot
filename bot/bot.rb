@@ -5,6 +5,9 @@ require './http_client'
 
 bot = Discordrb::Bot.new(token: ENV['BOT_TOKEN'])
 http_client = HttpClient.new
+green_color_code = 0x00cc74
+blue_color_code = 0x0044cc
+red_color_code = 0xcc0000
 
 CARD_URL='https://www.pokemon-card.com/card-search/index.php?keyword=%E3%83%AA%E3%82%B6%E3%83%BC%E3%83%89%E3%83%B3&se_ta=&regulation_sidebar_form=XY&pg=&illust=&sm_and_keyword=&keyword='
 DECK_URL='https://www.pokemon-card.com/deck/deck.html?deckID='
@@ -61,38 +64,38 @@ bot.application_command(:time).subcommand(:start) do |cmd|
     params = { channel_identification: cmd.channel_id.to_s, measure_minutes: minutes.to_i }
     response = JSON.parse(http_client.post('/times', params))
     if response['status_code'] == '409'
-        cmd.respond(content: 'ERROR: 既に計測中です')
+        cmd.respond(embeds: [{ color: red_color_code, description: '既に計測中です'}])
         next
     end
-    cmd.respond(content: '計測開始')
+    cmd.respond(embeds: [{ color: green_color_code, description: '計測開始'}])
 end
 
 bot.application_command(:time).subcommand(:end) do |cmd|
     response = JSON.parse(http_client.delete('/times/' + cmd.channel_id.to_s))
     if response['status_code'] == '400'
-        cmd.respond(content: 'ERROR: 計測していません')
+        cmd.respond(embeds: [{ color: red_color_code, description: '計測していません'}])
         next
     end
-    cmd.respond(content: '計測終了: ' + response['time'])
+    cmd.respond(embeds: [{ color: green_color_code, description: '計測終了: ' + response['time']}])
 end
 
 bot.application_command(:time).subcommand(:now) do |cmd|
     response = JSON.parse(http_client.get('/times/' + cmd.channel_id.to_s))
     if response['status_code'] == '400'
-        cmd.respond(content: 'ERROR: 計測していません')
+        cmd.respond(embeds: [{ color: red_color_code, description: '計測していません'}])
         next
     end
-    cmd.respond(content: '現在の経過時間: ' + response['time'])
+    cmd.respond(embeds: [{ color: green_color_code, description: '現在の経過時間: ' + response['time']}])
 end
 
 bot.application_command(:coin).subcommand(:toss) do |cmd|
     count = 1
     count = cmd.options['count'] if cmd.options['count']
     if count < 1 || count > 10
-        cmd.respond(content: 'countは1以上10以下で指定してください')
+        cmd.respond(embeds: [{ color: red_color_code, description: 'countは1以上10以下で指定してください'}])
         next
     end
-    cmd.respond(content: "コインを#{count}回投げます")
+    cmd.respond(embeds: [{ color: green_color_code, description: "コインを#{count}回投げます"}])
 
     count.times do |count|
         case rand(2)
@@ -111,10 +114,10 @@ bot.application_command(:dice).subcommand(:roll) do |cmd|
     count = 1
     count = cmd.options['count'] if cmd.options['count']
     if count < 1 || count > 10
-        cmd.respond(content: 'countは1以上10以下で指定してください')
+        cmd.respond(embeds: [{ color: red_color_code, description: 'countは1以上10以下で指定してください'}])
         next
     end
-    cmd.respond(content: "ダイスを#{count}回振ります")
+    cmd.respond(embeds: [{ color: green_color_code, description: "ダイスを#{count}回振ります"}])
 
     count.times do |count|
         cmd.send_message(content: "#{rand(6)+1}")

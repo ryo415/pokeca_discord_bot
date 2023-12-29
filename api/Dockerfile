@@ -3,7 +3,7 @@ ARG RUBY_VERSION=3.1.2
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 ENV LANG=C.UTF-8 \
-    APP_HOME=/app \
+    APP_HOME=/api \
     TZ=Asia/Tokyo \
     BUNDLE_PATH=/bundle
 

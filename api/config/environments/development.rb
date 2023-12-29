@@ -69,5 +69,5 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
 
-  config.hosts << "rails_app:3000"
+  config.hosts << "pokeca_discord_api:3000"
 end
