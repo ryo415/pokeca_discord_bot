@@ -95,18 +95,30 @@ bot.application_command(:coin).subcommand(:toss) do |cmd|
         cmd.respond(embeds: [{ color: red_color_code, description: 'countは1以上10以下で指定してください'}])
         next
     end
-    cmd.respond(embeds: [{ color: green_color_code, description: "コインを#{count}回投げます"}])
+    result = "コインを#{count}回投げます\n"
 
-    count.times do |count|
+    if count == 1
         case rand(2)
         when 0 then
-            result = "表"
+            result += "=> 表"
         when 1 then
-            result = "裏"
+            result += "=> 裏"
         else
-            result = "テーブル外に飛んで行った"
+            result += "=> テーブル外に飛んで行った"
         end
-        cmd.send_message(embeds: [{ color: green_color_code, description: result }])
+        cmd.respond(embeds: [{ color: green_color_code, description: result }])
+    else
+        count.times do |count|
+            case rand(2)
+            when 0 then
+                result += (count+1).to_s + "回目: 表\n"
+            when 1 then
+                result += (count+1).to_s + "回目: 裏\n"
+            else
+                result += (count+1).to_s + "回目: テーブル外に飛んで行った\n"
+            end
+        end
+        cmd.respond(embeds: [{ color: green_color_code, description: result }])
     end
 end
 

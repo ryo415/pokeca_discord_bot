@@ -8,7 +8,7 @@ namespace :time_check do
         tms.each do |tm|
             minutes = ((Time.now - tm.created_at) / 60).truncate
             # 時間チェック
-            if minutes % 5 == 0
+            if minutes > 0 && minutes % 5 == 0
                 text = '分経過'
                 if minutes >= tm.measure_minutes
                     text += "\n設定時間を経過したため計測終了します"

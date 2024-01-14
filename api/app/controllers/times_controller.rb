@@ -40,7 +40,7 @@ class TimesController < ApplicationController
         end
 
         seconds = ((Time.now - tm.created_at) % 60).round
-        minutes = ((Time.now - tm.created_at) / 60).round
+        minutes = ((Time.now - tm.created_at) / 60).truncate
 
         if tm.destroy
             render status: 200, json: { status_code: '200', message: 'success', time: minutes.to_s + ':' + seconds.to_s } and return
