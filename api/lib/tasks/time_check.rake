@@ -3,6 +3,7 @@ namespace :time_check do
     task :run => :environment do
         tms = TimeMeasurement.all
         discord_client = DiscordApiClient.new
+        green_color_code = 0x00cc74
 
         tms.each do |tm|
             minutes = ((Time.now - tm.created_at) / 60).truncate
@@ -14,12 +15,12 @@ namespace :time_check do
                 end
 
                 params = {
-                    'content': minutes.to_s + text
+                    'embed': [{ color: green_color_code , description: minutes.to_s + text}]
                 }
 
                 response = discord_client.post('/channels/' + tm.channel_identification + '/messages', params)
-                tm.destroy if minutes >= tm.measure_minutes
             end
+            tm.destroy if minutes >= tm.measure_minutes
         end
     end
 end

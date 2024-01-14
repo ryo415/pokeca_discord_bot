@@ -106,7 +106,7 @@ bot.application_command(:coin).subcommand(:toss) do |cmd|
         else
             result = "テーブル外に飛んで行った"
         end
-        cmd.send_message(content: result)
+        cmd.send_message(embeds: [{ color: green_color_code, description: result }])
     end
 end
 
@@ -120,7 +120,7 @@ bot.application_command(:dice).subcommand(:roll) do |cmd|
     cmd.respond(embeds: [{ color: green_color_code, description: "ダイスを#{count}回振ります"}])
 
     count.times do |count|
-        cmd.send_message(content: "#{rand(6)+1}")
+        cmd.send_message(embeds: [{ color: green_color_code, description: "#{rand(6)+1}"}])
     end
 end
 
