@@ -111,11 +111,11 @@ bot.application_command(:coin).subcommand(:toss) do |cmd|
         count.times do |count|
             case rand(2)
             when 0 then
-                result += (count+1).to_s + "回目: 表\n"
+                result += "#{count+1}回目: 表\n"
             when 1 then
-                result += (count+1).to_s + "回目: 裏\n"
+                result += "#{count+1}回目: 裏\n"
             else
-                result += (count+1).to_s + "回目: テーブル外に飛んで行った\n"
+                result += "#{count+1}回目: テーブル外に飛んで行った\n"
             end
         end
         cmd.respond(embeds: [{ color: green_color_code, description: result }])
@@ -129,11 +129,16 @@ bot.application_command(:dice).subcommand(:roll) do |cmd|
         cmd.respond(embeds: [{ color: red_color_code, description: 'countは1以上10以下で指定してください'}])
         next
     end
-    cmd.respond(embeds: [{ color: green_color_code, description: "ダイスを#{count}回振ります"}])
+    result = "ダイスを#{count}回振ります\n"
 
-    count.times do |count|
-        cmd.send_message(embeds: [{ color: green_color_code, description: "#{rand(6)+1}"}])
+    if count == 1
+        result += "#{rand(6)+1}"
+    else
+        count.times do |count|
+            result += "#{count+1}回目: #{rand(6)+1}\n"
+        end
     end
+    cmd.respond(embeds: [{ color: green_color_code, description: result}])
 end
 
 =begin
