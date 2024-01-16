@@ -176,6 +176,11 @@ bot.application_command(:command).subcommand(:help) do |cmd|
 /time now: 現在の経過時間を表示する
 /time end: 時間計測を終了する
 ```
+### 全体コマンド
+```
+/command help: コマンドの使い方表示
+/command button: コマンドのボタン表示
+```
 EOS
     cmd.respond(embeds: [{ color: $green_color_code, description: message}])
 end
