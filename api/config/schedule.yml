@@ -1,0 +1,4 @@
+time_check_job:
+  cron: "* * * * *"
+  class: "TimeCheckJob"
+  queue: default

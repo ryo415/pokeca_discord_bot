@@ -10,9 +10,9 @@ services:
       EDITOR: vim
       RUBYOPT: '-W:no-deprecated'
       RAILS_ENV: development
-    command: /bin/sh -c "bundle && rm -f /api/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -e development"
+    command: /bin/sh -c "bundle && rm -f /app/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -e development"
     volumes:
-      - ./api:/api:cached
+      - ./api:/app:cached
       - api-data-store:/bundle
 
   bot:
@@ -29,8 +29,31 @@ services:
       - ./bot:/bot:cached
       - bot-data-store:/bundle
 
+  worker:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: pokeca_discord_api
+    container_name: pokeca_discord_worker
+    environment:
+      EDITOR: vim
+      RUBYOPT: '-W:no-deprecated'
+      RAILS_ENV: development
+    command: /bin/sh -c "bundle && bundle exec sidekiq -C config/sidekiq.yml"
+    volumes:
+      - ./api:/app:cached
+      - worker-data-store:/bundle
+
+  redis:
+    image: "redis:latest"
+    container_name: pokeca_discord_redis
+    volumes:
+      - "./data/redis:/data"
+
 volumes:
   api-data-store:
     driver: local
   bot-data-store:
+    driver: local
+  worker-data-store:
     driver: local
