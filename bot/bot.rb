@@ -170,7 +170,6 @@ bot.application_command(:command).subcommand(:help) do |cmd|
 /dice roll [count(default: 1)]: ダイスをcount回投げる
 ```
 ### 時間計測
-※minutes分での計測の自動終了と一定時間ごとの通知はまだ未実装
 ```
 /time start [ minutes(default: 25) ]: minutes分時間計測する
 /time now: 現在の経過時間を表示する
